@@ -21,11 +21,14 @@ export default function Sidebar() {
           </button>
           {/* Brand */}
           <Link
-              to="/"
-              className="text-blueGray-700 text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase h-10"
-            >
-              <img  src="https://www.f-cdn.com/assets/main/en/assets/freelancer-logo.svg" className="h-8"></img>
-            </Link>
+            to="/"
+            className="text-blueGray-700 text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase h-10"
+          >
+            <img
+              src="https://www.f-cdn.com/assets/main/en/assets/freelancer-logo.svg"
+              className="h-8"
+            ></img>
+          </Link>
           {/* User */}
           <ul className="md:hidden items-center flex flex-wrap list-none">
             <li className="inline-block relative">
@@ -46,12 +49,15 @@ export default function Sidebar() {
             <div className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200">
               <div className="flex flex-wrap">
                 <div className="w-6/12">
-                <Link
-              to="/"
-              className="text-blueGray-700 text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase h-10"
-            >
-              <img  src="https://www.f-cdn.com/assets/main/en/assets/freelancer-logo.svg" className="h-8"></img>
-            </Link>
+                  <Link
+                    to="/"
+                    className="text-blueGray-700 text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase h-10"
+                  >
+                    <img
+                      src="https://www.f-cdn.com/assets/main/en/assets/freelancer-logo.svg"
+                      className="h-8"
+                    ></img>
+                  </Link>
                 </div>
                 <div className="w-6/12 flex justify-end">
                   <button
@@ -110,7 +116,8 @@ export default function Sidebar() {
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/userManagement") !== -1
+                    (window.location.href.indexOf("/admin/userManagement") !==
+                    -1
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
@@ -119,7 +126,8 @@ export default function Sidebar() {
                   <i
                     className={
                       "fas fa-user mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/userManagement") !== -1
+                      (window.location.href.indexOf("/admin/userManagement") !==
+                      -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
@@ -128,7 +136,7 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="items-center">
+              {/* <li className="items-center">
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
@@ -148,22 +156,23 @@ export default function Sidebar() {
                   ></i>{" "}
                   Report
                 </Link>
-              </li>
+              </li> */}
 
               <li className="items-center">
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/maps") !== -1
+                    (window.location.href.indexOf("/admin/transactions") !== -1
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="/admin/maps"
+                  to="/admin/transactions"
                 >
                   <i
                     className={
                       "fas fa-map-marked mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/maps") !== -1
+                      (window.location.href.indexOf("/admin/transactions") !==
+                      -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
@@ -172,7 +181,6 @@ export default function Sidebar() {
                 </Link>
               </li>
             </ul>
-
 
             {/* Divider */}
             {/* <hr className="my-4 md:min-w-full" /> */}

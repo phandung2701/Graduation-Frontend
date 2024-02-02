@@ -41,7 +41,7 @@ function Login() {
 
   const formSubmit = async (e) => {
     e.preventDefault();
-    if (formData.email.includes("@") && formData.password.length > 6) {
+    if (formData.email.includes("@")) {
       setIsLoading(true);
       const { data } = await loginUser(formData);
       if (data?.token) {
@@ -110,7 +110,7 @@ function Login() {
                       src={require("assets/img/google.svg").default}
                     />
                     Google
-                    <GoogleLogin
+                    {/* <GoogleLogin
                       clientId={process.env.REACT_APP_CLIENT_ID}
                       render={(renderProps) => (
                         <button
@@ -139,7 +139,7 @@ function Login() {
                       onFailure={googleFailure}
                       cookiePolicy={"single_host_origin"}
                       scope="profile email https://www.googleapis.com/auth/user.birthday.read"
-                    />
+                    /> */}
                   </button>
                 </div>
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
@@ -181,7 +181,7 @@ function Login() {
                       value={formData.password}
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     />
-                    {!showPass ? (
+                    {/* {!showPass ? (
                       <button type="button">
                         <BsEmojiLaughing
                           onClick={() => setShowPass(!showPass)}
@@ -196,7 +196,7 @@ function Login() {
                           className="text-[#fff] absolute top-3 right-5 sm:right-24 w-[30px] h-[25px]"
                         />
                       </button>
-                    )}
+                    )} */}
                   </div>
                   <div>
                     <label className="inline-flex items-center cursor-pointer">

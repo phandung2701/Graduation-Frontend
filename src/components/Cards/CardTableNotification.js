@@ -1,43 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import TableDropdown from "components/Dropdowns/TableDropdown.js";
 import { Button } from "@chakra-ui/react";
-import moment from "moment";
 
-const COLOR = {
-  pending: "orange",
-  done: "emerald",
-  reject: "red",
-  lock: "red",
-  active: "emerald",
-};
-export default function CardTableUser({ color, getUsers, users }) {
+export default function CardTableNotification({
+  getNotification,
+  notification,
+  color,
+}) {
   const HEADER = [
     {
       id: 2,
-      header: "Name",
-      accessor: "name",
+      header: "title",
+      accessor: "title",
     },
     {
-      id: 7,
-      header: "Email",
-      accessor: "email",
-    },
-    {
-      id: 3,
-      header: "Role",
-      accessor: "role",
-    },
-    {
-      id: 4,
-      header: "Status",
-      accessor: "status",
-    },
-    {
-      id: 5,
-      header: "Join Date",
-      accessor: "joinDate",
+      id: 17,
+      header: "content",
+      accessor: "applyDate",
     },
   ];
 
@@ -58,10 +38,15 @@ export default function CardTableUser({ color, getUsers, users }) {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                User Management
+                Jobs Apply
               </h3>
-              <Button colorScheme="teal" size="sm">
-                Create
+              <Button
+                colorScheme="red"
+                size="sm"
+                variant="outline"
+                onClick={getNotification}
+              >
+                refresh
               </Button>
             </div>
           </div>
@@ -71,7 +56,10 @@ export default function CardTableUser({ color, getUsers, users }) {
             </div>
           </div> */}
         </div>
-        <div className="block w-full overflow-x-auto">
+        <div
+          className="block w-full overflow-x-auto"
+          style={{ minHeight: "300px" }}
+        >
           {/* Projects table */}
           <table className="items-center w-full bg-transparent border-collapse">
             <thead>
@@ -106,20 +94,24 @@ export default function CardTableUser({ color, getUsers, users }) {
                     {head.header}
                   </th>
                 ))}
-                <th
-                  className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                    (color === "light"
-                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
-                  }
-                >
-                  Action
-                </th>
               </tr>
             </thead>
             <tbody>
-              {users.map((data, idx) => {
+              {notification.map((data, idx) => {
+                // Object.entries(data).map(([key,val]) => {
+                //   let index = POSITION.findIndex((col) => col === key);
+                //   if(data.badges){
+                //     return (
+                //       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                //       <i className={`fas fa-circle ${} mr-2`}></i>{" "}
+                //       {data.status}
+                //       </td>
+                //     )
+                //   }
+                // })
+                // if (data.badges) {
+                //   return;
+                // }
                 return (
                   <tr key={idx}>
                     <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
@@ -135,28 +127,11 @@ export default function CardTableUser({ color, getUsers, users }) {
                       </span>
                     </th>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {data.name}
-                    </td>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap p-4 ">
-                      <p className="line-clamp-1">{data.email}</p>
-                    </td>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {data.role}
-                    </td>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      <i
-                        className={`fas fa-circle text-${
-                          COLOR[data.status]
-                        }-500 mr-2`}
-                      ></i>{" "}
-                      {data.status}
-                    </td>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {moment(data.createdAt).format("DD-MM-YYYY HH:mm")}
+                      {data.title}
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      <TableDropdown />
+                      {data.content}
                     </td>
                   </tr>
                 );
@@ -164,36 +139,15 @@ export default function CardTableUser({ color, getUsers, users }) {
             </tbody>
           </table>
         </div>
-
-        {/*pagination */}
-
-        {/* <div className="rounded-t mb-0 px-4 py-3 border-0">
-          <div className="flex flex-wrap items-center">
-            <div className="relative flex w-full px-4 max-w-full flex-grow flex-1 items-center">
-              <div>
-                <p class="text-sm text-gray-700">
-                  Showing
-                  <span class="font-medium">1</span>
-                  to
-                  <span class="font-medium">10</span>
-                  of
-                  <span class="font-medium">97</span>
-                  results
-                </p>
-              </div>
-            </div>
-          </div>
-        </div> */}
-        {/*  */}
       </div>
     </>
   );
 }
 
-CardTableUser.defaultProps = {
+CardTableNotification.defaultProps = {
   color: "light",
 };
 
-CardTableUser.propTypes = {
+CardTableNotification.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };

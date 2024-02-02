@@ -5,6 +5,11 @@ import TableDropdown from "components/Dropdowns/TableDropdown.js";
 import { Button } from "@chakra-ui/react";
 import moment from "moment";
 
+const COLOR = {
+  pending: "orange",
+  done: "emerald",
+  reject: "red",
+};
 export default function CartTableJobApply({
   getListMyJobApply,
   jobApply,
@@ -17,7 +22,7 @@ export default function CartTableJobApply({
       accessor: "title",
     },
     {
-      id: 7,
+      id: 17,
       header: "Apply Date",
       accessor: "applyDate",
     },
@@ -47,7 +52,7 @@ export default function CartTableJobApply({
       accessor: "user",
     },
     {
-      id: 5,
+      id: 15,
       header: "Progress",
       accessor: "progress",
     },
@@ -72,7 +77,12 @@ export default function CartTableJobApply({
               >
                 Jobs Apply
               </h3>
-              <Button colorScheme="red" size="sm" variant="outline">
+              <Button
+                colorScheme="red"
+                size="sm"
+                variant="outline"
+                onClick={getListMyJobApply}
+              >
                 refresh
               </Button>
             </div>
@@ -121,16 +131,6 @@ export default function CartTableJobApply({
                     {head.header}
                   </th>
                 ))}
-                <th
-                  className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                    (color === "light"
-                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
-                  }
-                >
-                  Action
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -181,20 +181,24 @@ export default function CartTableJobApply({
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <i
                         className={`fas fa-circle text-${
-                          data.status === "pending" ? "orange" : "emerald"
+                          COLOR[data.status]
                         }-500 mr-2`}
                       ></i>{" "}
                       {data.status}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {moment(data.approveDate).format("DD-MM-YYYY HH:mm")}
+                      {data.approveDate
+                        ? moment(data.approveDate).format("DD-MM-YYYY HH:mm")
+                        : ""}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       {data.user?.name}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <div className="flex items-center">
-                        <span className="mr-2">{data.progress || "0%"}</span>
+                        <span className="mr-2">
+                          {data.progress + "%" || "0%"}
+                        </span>
                         <div className="relative w-full">
                           <div className="overflow-hidden h-2 text-xs flex rounded bg-red-200">
                             <div
@@ -205,36 +209,12 @@ export default function CartTableJobApply({
                         </div>
                       </div>
                     </td>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      <TableDropdown />
-                    </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
         </div>
-
-        {/*pagination */}
-
-        {/* <div className="rounded-t mb-0 px-4 py-3 border-0">
-          <div className="flex flex-wrap items-center">
-            <div className="relative flex w-full px-4 max-w-full flex-grow flex-1 items-center">
-              <div>
-                <p class="text-sm text-gray-700">
-                  Showing
-                  <span class="font-medium">1</span>
-                  to
-                  <span class="font-medium">10</span>
-                  of
-                  <span class="font-medium">97</span>
-                  results
-                </p>
-              </div>
-            </div>
-          </div>
-        </div> */}
-        {/*  */}
       </div>
     </>
   );

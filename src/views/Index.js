@@ -7,26 +7,26 @@ import Footer from "components/Footers/Footer.js";
 
 const TAPINTO = [
   {
-    icon:'fas fa-sitemap',
-    title:'Post your job',
-    desc :'It\'s free and easy! Get lots of competitive bids that suit your budget in minutes. Start making your dreams reality.'
+    icon: "fas fa-sitemap",
+    title: "Post your job",
+    desc: "It's free and easy! Get lots of competitive bids that suit your budget in minutes. Start making your dreams reality.",
   },
   {
-    icon:'fas fa-drafting-compass',
-    title:'Choose freelancers',
-    desc :'No job is too big or complex. We\'ve got freelancers for jobs of any size or budget, across 2700+ skills. Let our talent bring your ideas to life.'
+    icon: "fas fa-drafting-compass",
+    title: "Choose freelancers",
+    desc: "No job is too big or complex. We've got freelancers for jobs of any size or budget, across 2700+ skills. Let our talent bring your ideas to life.",
   },
   {
-    icon:'fas fa-newspaper',
-    title:'Pay safely',
-    desc :'Only pay for work when you are 100% satisfied with the outcome. Our milestone payment system protects you every step of the way.'
+    icon: "fas fa-newspaper",
+    title: "Pay safely",
+    desc: "Only pay for work when you are 100% satisfied with the outcome. Our milestone payment system protects you every step of the way.",
   },
   {
-    icon:'fas fa-file-alt',
-    title:'We\'re here to help',
-    desc :'Your time is precious. Let our team of expert recruiters and co-pilots save you time finding talent, even managing your job if needed.'
-  }
-]
+    icon: "fas fa-file-alt",
+    title: "We're here to help",
+    desc: "Your time is precious. Let our team of expert recruiters and co-pilots save you time finding talent, even managing your job if needed.",
+  },
+];
 
 export default function Index() {
   return (
@@ -45,13 +45,12 @@ export default function Index() {
                 you're 100% happy
               </p>
               <div className="mt-12">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index"
-                  target="_blank"
+                <Link
+                  to="/jobs"
                   className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-lightBlue-500 active:bg-lightBlue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
                 >
                   Get started
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -88,7 +87,6 @@ export default function Index() {
           <div className="flex flex-wrap items-center">
             <div className="w-10/12 md:w-6/12 lg:w-4/12 px-12 md:px-4 mr-auto ml-auto -mt-32">
               <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-lightBlue-500">
-             
                 <img
                   alt="..."
                   src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
@@ -121,21 +119,19 @@ export default function Index() {
 
             <div className="w-full md:w-6/12 px-4">
               <div className="flex flex-wrap">
-                {TAPINTO.map((tap,idx)=>(
+                {TAPINTO.map((tap, idx) => (
                   <div className="w-full md:w-6/12 px-4" key={idx}>
-                      <div className="relative flex flex-col">
-                        <div className="px-4 py-5 flex-auto">
-                          <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-white">
-                            <i className={tap.icon}></i>
-                          </div>
-                          <h6 className="text-xl mb-1 font-semibold">
-                          {tap.title}
-                          </h6>
-                          <p className="mb-4 text-blueGray-500">
-                            {tap.desc}
-                          </p>
+                    <div className="relative flex flex-col">
+                      <div className="px-4 py-5 flex-auto">
+                        <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-white">
+                          <i className={tap.icon}></i>
                         </div>
+                        <h6 className="text-xl mb-1 font-semibold">
+                          {tap.title}
+                        </h6>
+                        <p className="mb-4 text-blueGray-500">{tap.desc}</p>
                       </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -150,10 +146,12 @@ export default function Index() {
                 <i className="fas fa-sitemap text-xl"></i>
               </div>
               <h3 className="text-3xl mb-2 font-semibold leading-normal">
-              Get your business ready for AI
+                Get your business ready for AI
               </h3>
               <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-blueGray-600">
-              Unlock access to thousands of AI specialists across every technology. Ensure your business thrives in the new AI-powered world.
+                Unlock access to thousands of AI specialists across every
+                technology. Ensure your business thrives in the new AI-powered
+                world.
               </p>
               <div className="block pb-6">
                 <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
@@ -606,13 +604,12 @@ export default function Index() {
                 new web app or give an old project a new look!
               </p>
               <div className="sm:block flex flex-col mt-10">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index"
-                  target="_blank"
+                <Link
+                  to="/"
                   className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-lightBlue-500 active:bg-lightBlue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
                 >
                   Get started
-                </a>
+                </Link>
                 <a
                   href="https://github.com/creativetimofficial/notus-react?ref=nr-index"
                   target="_blank"

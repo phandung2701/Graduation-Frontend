@@ -1,13 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import TableDropdown from "components/Dropdowns/TableDropdown.js";
-import { Button, HStack } from "@chakra-ui/react";
+import MyJobDropdown from "components/Dropdowns/MyJobDropdown.js";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  HStack,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
 import moment from "moment";
+import { getApplicationList } from "apis/job";
+import TableApplications from "./TableApplications";
+import { doneJob } from "apis/job";
+import { toast } from "react-toastify";
 
 export default function CardListMyJobs({ myJob, color, getListMyJob }) {
-  console.log(myJob);
+  const [jobApplys, setJobApplys] = useState([]);
+  const [selectJob, setSelectJob] = useState({});
   const HEADER = [
+    {
+      id: 1,
+      header: "Code",
+      accessor: "title",
+    },
     {
       id: 2,
       header: "Job Name",
@@ -33,15 +57,55 @@ export default function CardListMyJobs({ myJob, color, getListMyJob }) {
       header: "Estimate Complete",
       accessor: "estComplete",
     },
+
     {
       id: 6,
       header: "Status",
       accessor: "status",
     },
+    {
+      id: 11,
+      header: "Complete Job",
+      accessor: "complete",
+    },
   ];
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const handleGetJobApply = async (data) => {
+    setSelectJob(data);
+    let req = await getApplicationList({ jobId: data._id });
+    if (req) {
+      setJobApplys(req);
+      onOpen();
+    }
+  };
+  const handleDoneJob = async (data) => {
+    let req = await doneJob({ jobId: data._id });
+    if (req && req.err === 200) {
+      toast.success(req.msg);
+      getListMyJob();
+    } else {
+      toast.error(req.msg);
+    }
+  };
   return (
     <>
+      <Button onClick={onOpen}>Submit</Button>
+      <Modal isOpen={isOpen} onClose={onClose} size={"full"}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Applications</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <TableApplications
+              jobApply={jobApplys}
+              onClose={onClose}
+              getListMyJob={getListMyJob}
+              handleGetJobApply={handleGetJobApply}
+              selectJob={selectJob}
+            />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       <div
         className={
           "relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded " +
@@ -161,6 +225,9 @@ export default function CardListMyJobs({ myJob, color, getListMyJob }) {
                       </span>
                     </th>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {data.sid}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       {data.title}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap p-4 ">
@@ -175,13 +242,33 @@ export default function CardListMyJobs({ myJob, color, getListMyJob }) {
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       {data.estComplete}
                     </td>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      <i className="fas fa-circle text-emerald-500 mr-2"></i>{" "}
-                      {data.status}
-                    </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      <TableDropdown />
+                      <i
+                        className={`fas fa-circle  text-${
+                          data.status === "inactive" ? "red" : "emerald"
+                        }-500 mr-2`}
+                      ></i>{" "}
+                      {data.status}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {data.status === "inProgress" ? (
+                        <Button
+                          colorScheme="teal"
+                          variant="outline"
+                          size={"sm"}
+                          onClick={() => handleDoneJob(data)}
+                        >
+                          done
+                        </Button>
+                      ) : (
+                        ""
+                      )}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <MyJobDropdown
+                        handleGetJobApply={() => handleGetJobApply(data)}
+                      />
                     </td>
                   </tr>
                 );
@@ -189,27 +276,6 @@ export default function CardListMyJobs({ myJob, color, getListMyJob }) {
             </tbody>
           </table>
         </div>
-
-        {/*pagination */}
-
-        {/* <div className="rounded-t mb-0 px-4 py-3 border-0">
-          <div className="flex flex-wrap items-center">
-            <div className="relative flex w-full px-4 max-w-full flex-grow flex-1 items-center">
-              <div>
-                <p class="text-sm text-gray-700">
-                  Showing
-                  <span class="font-medium">1</span>
-                  to
-                  <span class="font-medium">10</span>
-                  of
-                  <span class="font-medium">97</span>
-                  results
-                </p>
-              </div>
-            </div>
-          </div>
-        </div> */}
-        {/*  */}
       </div>
     </>
   );

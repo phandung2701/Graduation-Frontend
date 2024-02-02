@@ -16,7 +16,7 @@ const NotificationDropdown = () => {
     setDropdownPopoverShow(false);
   };
   return (
-    <>
+    <div>
       <a
         className="text-blueGray-500 py-1 px-3"
         href="#pablo"
@@ -42,7 +42,7 @@ const NotificationDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Action
+          Update
         </a>
         <a
           href="#pablo"
@@ -51,19 +51,10 @@ const NotificationDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Another action
-        </a>
-        <a
-          href="#pablo"
-          className={
-            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          }
-          onClick={(e) => e.preventDefault()}
-        >
-          Something else here
+          Delete
         </a>
       </div>
-    </>
+    </div>
   );
 };
 

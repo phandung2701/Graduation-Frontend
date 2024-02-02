@@ -9,8 +9,7 @@ import { BsEmojiLaughing, BsEmojiExpressionless } from "react-icons/bs";
 import { toast } from "react-toastify";
 import { validUser } from "../apis/auth";
 const defaultData = {
-  firstname: "",
-  lastname: "",
+  name: "",
   email: "",
   password: "",
 };
@@ -27,13 +26,13 @@ function Regsiter() {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    if (formData.email.includes("@") && formData.password.length > 6) {
+    if (formData.email.includes("@")) {
       const { data } = await registerUser(formData);
       if (data?.token) {
         sessionStorage.setItem("userToken", data.token);
         toast.success("Succesfully Registered😍");
         setIsLoading(false);
-        pageRoute.push("/chats");
+        pageRoute.push("/");
       } else {
         setIsLoading(false);
         toast.error("Invalid Credentials!");
@@ -52,7 +51,7 @@ function Regsiter() {
       setIsLoading(false);
       if (response.data.token) {
         sessionStorage.setItem("userToken", response.data.token);
-        pageRoute.push("/chats");
+        pageRoute.push("/");
       }
     }
   };
@@ -71,7 +70,7 @@ function Regsiter() {
     const isValid = async () => {
       const data = await validUser();
       if (data?.user) {
-        window.location.href = "/chats";
+        window.location.href = "/";
       }
     };
     isValid();
@@ -94,7 +93,7 @@ function Regsiter() {
           className="flex flex-col gap-y-3 mt-[12%]"
           onSubmit={handleOnSubmit}
         >
-          <div className="flex gap-x-2 w-[100%]">
+          {/* <div className="flex gap-x-2 w-[100%]">
             <input
               onChange={handleOnChange}
               className="bg-[#222222] h-[50px] pl-3 text-[#ffff] w-[49%] sm:w-[47%]"
@@ -111,6 +110,17 @@ function Regsiter() {
               name="lastname"
               placeholder="Last Name"
               value={formData.lastname}
+              required
+            />
+          </div> */}
+          <div className="flex gap-x-2 w-[100%]">
+            <input
+              onChange={handleOnChange}
+              className="bg-[#222222] h-[50px] pl-3 text-[#ffff] w-[100%] sm:w-[96.3%]"
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
               required
             />
           </div>

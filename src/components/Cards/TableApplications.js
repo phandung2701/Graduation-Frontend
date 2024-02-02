@@ -1,43 +1,77 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import TableDropdown from "components/Dropdowns/TableDropdown.js";
 import { Button } from "@chakra-ui/react";
 import moment from "moment";
+import { approveJob } from "apis/job";
+import { toast } from "react-toastify";
 
 const COLOR = {
   pending: "orange",
   done: "emerald",
   reject: "red",
-  lock: "red",
-  active: "emerald",
+  inProgress: "blue",
 };
-export default function CardTableUser({ color, getUsers, users }) {
+
+export default function TableApplications({
+  getListMyJob,
+  jobApply,
+  color,
+  onClose,
+  handleGetJobApply,
+  selectJob,
+}) {
+  const handleApproveJob = async (data) => {
+    let approve = await approveJob({ jobApplyId: data._id });
+    console.log(approve);
+    if (approve && approve?.err === 200) {
+      toast.success(approve?.msg);
+      onClose();
+      getListMyJob();
+    } else {
+      toast.error(approve?.msg);
+    }
+  };
   const HEADER = [
     {
       id: 2,
-      header: "Name",
-      accessor: "name",
+      header: "Job Name",
+      accessor: "title",
     },
     {
-      id: 7,
-      header: "Email",
-      accessor: "email",
+      id: 17,
+      header: "Apply Date",
+      accessor: "applyDate",
     },
     {
       id: 3,
-      header: "Role",
-      accessor: "role",
+      header: "Offer proposal",
+      accessor: "offer",
     },
     {
       id: 4,
+      header: "Estimated completion time",
+      accessor: "esTime",
+    },
+    {
+      id: 5,
       header: "Status",
       accessor: "status",
     },
     {
-      id: 5,
-      header: "Join Date",
-      accessor: "joinDate",
+      id: 7,
+      header: "Approve Date",
+      accessor: "approveDate",
+    },
+    {
+      id: 10,
+      header: "Assignee",
+      accessor: "user",
+    },
+    {
+      id: 15,
+      header: "Progress",
+      accessor: "progress",
     },
   ];
 
@@ -58,10 +92,15 @@ export default function CardTableUser({ color, getUsers, users }) {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                User Management
+                Jobs Apply
               </h3>
-              <Button colorScheme="teal" size="sm">
-                Create
+              <Button
+                colorScheme="red"
+                size="sm"
+                variant="outline"
+                onClick={() => handleGetJobApply(selectJob)}
+              >
+                refresh
               </Button>
             </div>
           </div>
@@ -71,7 +110,10 @@ export default function CardTableUser({ color, getUsers, users }) {
             </div>
           </div> */}
         </div>
-        <div className="block w-full overflow-x-auto">
+        <div
+          className="block w-full overflow-x-auto"
+          style={{ minHeight: "300px" }}
+        >
           {/* Projects table */}
           <table className="items-center w-full bg-transparent border-collapse">
             <thead>
@@ -119,7 +161,21 @@ export default function CardTableUser({ color, getUsers, users }) {
               </tr>
             </thead>
             <tbody>
-              {users.map((data, idx) => {
+              {jobApply.map((data, idx) => {
+                // Object.entries(data).map(([key,val]) => {
+                //   let index = POSITION.findIndex((col) => col === key);
+                //   if(data.badges){
+                //     return (
+                //       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                //       <i className={`fas fa-circle ${} mr-2`}></i>{" "}
+                //       {data.status}
+                //       </td>
+                //     )
+                //   }
+                // })
+                // if (data.badges) {
+                //   return;
+                // }
                 return (
                   <tr key={idx}>
                     <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
@@ -135,14 +191,20 @@ export default function CardTableUser({ color, getUsers, users }) {
                       </span>
                     </th>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {data.name}
+                      {data.job?.title}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap p-4 ">
-                      <p className="line-clamp-1">{data.email}</p>
+                      <p className="line-clamp-1">
+                        {moment(data.requestDate).format("DD-MM-YYYY HH:mm")}
+                      </p>
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {data.role}
+                      {data.requestOffer}
                     </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {data.requestEstTime}
+                    </td>
+
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <i
                         className={`fas fa-circle text-${
@@ -152,11 +214,39 @@ export default function CardTableUser({ color, getUsers, users }) {
                       {data.status}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {moment(data.createdAt).format("DD-MM-YYYY HH:mm")}
+                      {data.approveDate
+                        ? moment(data.approveDate).format("DD-MM-YYYY HH:mm")
+                        : ""}
                     </td>
-
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      <TableDropdown />
+                      {data.user?.name}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <div className="flex items-center">
+                        <span className="mr-2">{data.progress || "0%"}</span>
+                        <div className="relative w-full">
+                          <div className="overflow-hidden h-2 text-xs flex rounded bg-red-200">
+                            <div
+                              style={{ width: data.progress || 0 }}
+                              className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {data.status === "active" ? (
+                        <Button
+                          colorScheme="teal"
+                          variant="outline"
+                          size={"sm"}
+                          onClick={() => handleApproveJob(data)}
+                        >
+                          Approve
+                        </Button>
+                      ) : (
+                        ""
+                      )}
                     </td>
                   </tr>
                 );
@@ -190,10 +280,10 @@ export default function CardTableUser({ color, getUsers, users }) {
   );
 }
 
-CardTableUser.defaultProps = {
+TableApplications.defaultProps = {
   color: "light",
 };
 
-CardTableUser.propTypes = {
+TableApplications.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };

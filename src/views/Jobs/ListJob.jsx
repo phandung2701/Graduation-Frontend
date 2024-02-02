@@ -33,6 +33,8 @@ import moment from "moment";
 function ListJob() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listJobs, setListJobs] = useState([]);
+  const [selectJob, setSelectJob] = useState({});
+  const [showDetail, setShowDetail] = useState(false);
 
   const getListMyJob = async () => {
     let data = await listAllJob();
@@ -44,9 +46,13 @@ function ListJob() {
 
   const initialRef = React.useRef();
   const finalRef = React.useRef();
-
+  console.log(listJobs);
+  const handleSelectJob = (data = {}) => {
+    setSelectJob(data);
+    setShowDetail(true);
+  };
   return (
-    <div className="" style={{ background: "grey" }}>
+    <div className="" style={{ background: "grey", minHeight: "100vh" }}>
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
@@ -79,72 +85,125 @@ function ListJob() {
       </Modal>
       {/* --------------- */}
       <IndexNavbar />
-      <Grid
-        templateAreas={`"header header"
+
+      {showDetail ? (
+        <DetailJob selectJob={selectJob} />
+      ) : (
+        <Grid
+          templateAreas={`"header header"
                   "nav main"
                   `}
-        gridTemplateRows={"0px 1fr 0px"}
-        gridTemplateColumns={"300px 1fr"}
-        gap="4"
-        color="blackAlpha.700"
-        // fontWeight="bold"
-        style={{ width: "1200px", margin: "70px auto 0 auto" }}
-      >
-        <GridItem pl="2" bg="orange.300" area={"header"}></GridItem>
-        <GridItem pl="2" area={"nav"}>
-          <Card maxH={"800px"} minH={"520px"}>
-            <CardBody>Filter: Coming soon ...</CardBody>
-          </Card>
-        </GridItem>
-        <GridItem pl="2" area={"main"}>
-          <Card>
-            <CardBody>
-              <Stack divider={<StackDivider />} spacing="4" minH={"480px"}>
-                {listJobs.map(
-                  (ele) =>
-                    moment(ele.expireDate).diff(moment(new Date()), "days") >
-                      0 && (
-                      <Box minH={"190px"} key={ele._id}>
-                        <Flex align={"center"}>
-                          <Heading
-                            size="sm"
-                            textTransform="uppercase"
-                            noOfLines={1}
+          gridTemplateRows={"0px 1fr 0px"}
+          gridTemplateColumns={"300px 1fr"}
+          gap="4"
+          color="blackAlpha.700"
+          // fontWeight="bold"
+          style={{ width: "1200px", margin: "70px auto 0 auto" }}
+        >
+          <GridItem pl="2" bg="orange.300" area={"header"}></GridItem>
+          <GridItem pl="2" area={"nav"}>
+            <Card maxH={"800px"} minH={"520px"}>
+              <CardBody>Filter: Coming soon ...</CardBody>
+            </Card>
+          </GridItem>
+          <GridItem pl="2" area={"main"}>
+            <Card>
+              <CardBody>
+                <Stack divider={<StackDivider />} spacing="4" minH={"480px"}>
+                  {listJobs.length > 0 ? (
+                    listJobs.map(
+                      (ele) =>
+                        moment(ele.expireDate).diff(
+                          moment(new Date()),
+                          "days"
+                        ) >= 0 && (
+                          <Box
+                            minH={"190px"}
+                            key={ele._id}
+                            className="hover:text-blueGray-500"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleSelectJob(ele)}
                           >
-                            {ele.title}
-                          </Heading>
-                          <Text size={"xs"}>
-                            -{" "}
-                            {moment(ele.expireDate).diff(
-                              moment(new Date()),
-                              "days"
-                            )}{" "}
-                            days left
-                          </Text>
-                        </Flex>
-                        <Text noOfLines={5} pt="2">
-                          {ele.description}
-                        </Text>
-                        <Stack direction="row" mt="3">
-                          <Badge
-                            variant="subtle"
-                            colorScheme="green"
-                            p={"1"}
-                            borderRadius="4"
-                            color={"black"}
-                          >
-                            Removed
-                          </Badge>
-                        </Stack>
-                      </Box>
+                            <Flex align={"center"}>
+                              <Heading
+                                size="sm"
+                                textTransform="uppercase"
+                                noOfLines={1}
+                              >
+                                {ele.title}
+                              </Heading>
+                              <Text size={"xs"}>
+                                -{" "}
+                                {moment(ele.expireDate).diff(
+                                  moment(new Date()),
+                                  "days"
+                                ) === 0
+                                  ? moment(ele.expireDate).diff(
+                                      moment(new Date()),
+                                      "hours"
+                                    )
+                                  : moment(ele.expireDate).diff(
+                                      moment(new Date()),
+                                      "days"
+                                    )}{" "}
+                                {moment(ele.expireDate).diff(
+                                  moment(new Date()),
+                                  "days"
+                                ) === 0
+                                  ? "hours left"
+                                  : "days left"}
+                              </Text>
+                            </Flex>
+                            <Text noOfLines={5} pt="2">
+                              {ele.description}
+                            </Text>
+                            <Stack direction="row" mt="3">
+                              <Badge
+                                variant="subtle"
+                                colorScheme="green"
+                                p={"1"}
+                                borderRadius="4"
+                                color={"black"}
+                              >
+                                Java
+                              </Badge>
+                              <Badge
+                                variant="subtle"
+                                colorScheme="green"
+                                p={"1"}
+                                borderRadius="4"
+                                color={"black"}
+                              >
+                                Web
+                              </Badge>
+                              <Badge
+                                variant="subtle"
+                                colorScheme="green"
+                                p={"1"}
+                                borderRadius="4"
+                                color={"black"}
+                              >
+                                HTML
+                              </Badge>
+                            </Stack>
+                          </Box>
+                        )
                     )
-                )}
-              </Stack>
-            </CardBody>
-          </Card>
-        </GridItem>
-      </Grid>
-      <DetailJob />
+                  ) : (
+                    <div>
+                      <img
+                        alt="..."
+                        className="w-full rounded-full align-middle border-none shadow-lg"
+                        src={require("assets/img/nojob.jpg")}
+                      />
+                    </div>
+                  )}
+                </Stack>
+              </CardBody>
+            </Card>
+          </GridItem>
+        </Grid>
+      )}
     </div>
   );
 }

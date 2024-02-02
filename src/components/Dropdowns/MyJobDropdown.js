@@ -1,32 +1,24 @@
 import React from "react";
 import { createPopper } from "@popperjs/core";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import { toast } from "react-toastify";
 
-const UserDropdown = () => {
+const NotificationDropdown = (props) => {
   // dropdown props
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
   const popoverDropdownRef = React.createRef();
   const openDropdownPopover = () => {
     createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
-      placement: "bottom-start",
+      placement: "left-start",
     });
     setDropdownPopoverShow(true);
   };
   const closeDropdownPopover = () => {
     setDropdownPopoverShow(false);
   };
-  const onSignOut = (e) => {
-    e.preventDefault();
-    toast.success("Logout Successfull!");
-    sessionStorage.removeItem("userToken");
-    window.location.href = "/auth/login";
-  };
   return (
-    <>
+    <div>
       <a
-        className="text-blueGray-500 block"
+        className="text-blueGray-500 py-1 px-3"
         href="#pablo"
         ref={btnDropdownRef}
         onClick={(e) => {
@@ -34,15 +26,7 @@ const UserDropdown = () => {
           dropdownPopoverShow ? closeDropdownPopover() : openDropdownPopover();
         }}
       >
-        <div className="items-center flex">
-          <span className="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
-            <img
-              alt="..."
-              className="w-full rounded-full align-middle border-none shadow-lg"
-              src={require("assets/img/149071.png")}
-            />
-          </span>
-        </div>
+        <i className="fas fa-cog"></i>
       </a>
       <div
         ref={popoverDropdownRef}
@@ -51,14 +35,6 @@ const UserDropdown = () => {
           "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
         }
       >
-        <Link
-          to="/profile"
-          className={
-            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          }
-        >
-          Profile
-        </Link>
         <a
           href="#pablo"
           className={
@@ -66,7 +42,7 @@ const UserDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Another action
+          Update
         </a>
         <a
           href="#pablo"
@@ -75,21 +51,21 @@ const UserDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Something else here
+          Delete
         </a>
-        <div className="h-0 my-2 border border-solid border-blueGray-100" />
-        <a
+        <p
           href="#pablo"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
-          onClick={(e) => onSignOut(e)}
+          onClick={props.handleGetJobApply}
+          style={{ cursor: "pointer" }}
         >
-          Sign Out
-        </a>
+          Applications
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 
-export default UserDropdown;
+export default NotificationDropdown;

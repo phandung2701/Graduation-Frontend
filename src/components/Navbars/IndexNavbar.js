@@ -6,17 +6,22 @@ import { Link } from "react-router-dom";
 import IndexDropdown from "components/Dropdowns/IndexDropdown.js";
 import UserDropdown from "components/Dropdowns/UserDropdown";
 import { validUser } from "apis/auth";
+import PocketDropdown from "components/Dropdowns/PocketDropdown";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const [isLogin, setIsLogin] = React.useState(false);
+  const [balance, setBalance] = React.useState(0);
+  const [isAdmin, setIsAdmin] = React.useState(false);
+  const isValid = async () => {
+    const data = await validUser();
+    if (data?.user) {
+      setIsLogin(true);
+      setBalance(data.balance);
+      setIsAdmin(data?.user.role === "admin");
+    }
+  };
   useEffect(() => {
-    const isValid = async () => {
-      const data = await validUser();
-      if (data?.user) {
-        setIsLogin(true);
-      }
-    };
     isValid();
   }, []);
   return (
@@ -61,9 +66,11 @@ export default function Navbar(props) {
             </ul>
             {isLogin ? (
               <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-                <li className="flex items-center">
-                  <IndexDropdown />
-                </li>
+                {isAdmin ? (
+                  <li className="flex items-center">
+                    <IndexDropdown />
+                  </li>
+                ) : null}
                 <li className="flex items-center">
                   <Link
                     className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
@@ -81,6 +88,9 @@ export default function Navbar(props) {
                     <i className="text-blueGray-400 fab fa-facebook-messenger text-lg leading-lg " />
                     <span className="inline-block ml-2">Chat</span>
                   </Link>
+                </li>
+                <li className="flex items-center">
+                  <PocketDropdown balance={balance || 0} isValid={isValid} />
                 </li>
                 <li className="flex items-center">
                   <UserDropdown />

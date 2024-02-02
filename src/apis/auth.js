@@ -67,3 +67,26 @@ export const checkValid = async () => {
     window.location.href = "/";
   }
 };
+
+export const getListUser = async (id, body) => {
+  try {
+    const token = sessionStorage.getItem("userToken");
+
+    const { data } = await API(token).get("/user/list");
+    return data;
+  } catch (error) {
+    console.log("error in update user api");
+    toast.error("Something Went Wrong.try Again!");
+  }
+};
+
+export const recharge = async (money) => {
+  try {
+    const token = sessionStorage.getItem("userToken");
+
+    const { data } = await API(token).post(`/api/pocket/recharge`, money);
+    return data;
+  } catch (error) {
+    console.log("error in recharge API " + error);
+  }
+};

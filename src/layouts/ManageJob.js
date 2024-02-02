@@ -9,6 +9,8 @@ import MyJobs from "views/manageJob/MyJobs";
 import UserDropdown from "components/Dropdowns/UserDropdown";
 import NotificationDropdown from "components/Dropdowns/NotificationDropdown";
 import { Link } from "@chakra-ui/react";
+import Transaction from "views/manageJob/Transaction";
+import NotificationHistory from "views/manageJob/NotificationHistory";
 
 export default function ManageJob() {
   return (
@@ -46,10 +48,15 @@ export default function ManageJob() {
         </div>
         <div className=" px-4 md:px-10 mx-auto w-full -m-24">
           <Switch>
+            <Route path="/manage/transaction" exact component={Transaction} />
             <Route path="/manage/myJobs" exact component={MyJobs} />
-            <Route path="/admin/maps" exact component={Maps} />
+            <Route
+              path="/manage/notification"
+              exact
+              component={NotificationHistory}
+            />
+
             <Route path="/manage/jobsApply" exact component={JobsApply} />
-            <Route path="/admin/tables" exact component={Tables} />
             <Redirect from="/manage" to="/manage/myJobs" />
           </Switch>
         </div>

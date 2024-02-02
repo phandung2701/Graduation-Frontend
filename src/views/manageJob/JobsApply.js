@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import CartTableJobApply from "components/Cards/CartTableJobApply";
+import CardTableJobApply from "components/Cards/CardTableJobApply";
 import { listMyJobApply } from "apis/job";
 
 export default function MyJobs() {
@@ -16,7 +16,7 @@ export default function MyJobs() {
     <>
       <div className="flex flex-wrap pt-3">
         <div className="w-full mb-12 px-4">
-          <CartTableJobApply
+          <CardTableJobApply
             jobApply={jobApply}
             getListMyJobApply={getListMyJobApply}
           />

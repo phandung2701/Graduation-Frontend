@@ -4,40 +4,47 @@ import PropTypes from "prop-types";
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 import { Button } from "@chakra-ui/react";
 import moment from "moment";
-
 const COLOR = {
   pending: "orange",
   done: "emerald",
   reject: "red",
-  lock: "red",
-  active: "emerald",
 };
-export default function CardTableUser({ color, getUsers, users }) {
+export default function CardTransaction({ getListTxns, txn, color }) {
   const HEADER = [
     {
       id: 2,
-      header: "Name",
-      accessor: "name",
+      header: "Code",
+      accessor: "sid",
     },
     {
       id: 7,
-      header: "Email",
-      accessor: "email",
+      header: "Sender Name",
+      accessor: "senderId",
     },
     {
       id: 3,
-      header: "Role",
-      accessor: "role",
+      header: "Receiver Name",
+      accessor: "offeroffer",
     },
     {
       id: 4,
+      header: "Amount",
+      accessor: "amount",
+    },
+    {
+      id: 5,
       header: "Status",
       accessor: "status",
     },
     {
-      id: 5,
-      header: "Join Date",
-      accessor: "joinDate",
+      id: 7,
+      header: "Transaction Date",
+      accessor: "transDate",
+    },
+    {
+      id: 10,
+      header: "Transaction type",
+      accessor: "transType",
     },
   ];
 
@@ -58,10 +65,15 @@ export default function CardTableUser({ color, getUsers, users }) {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                User Management
+                Transaction
               </h3>
-              <Button colorScheme="teal" size="sm">
-                Create
+              <Button
+                colorScheme="red"
+                size="sm"
+                variant="outline"
+                onClick={getListTxns}
+              >
+                refresh
               </Button>
             </div>
           </div>
@@ -71,7 +83,10 @@ export default function CardTableUser({ color, getUsers, users }) {
             </div>
           </div> */}
         </div>
-        <div className="block w-full overflow-x-auto">
+        <div
+          className="block w-full overflow-x-auto"
+          style={{ minHeight: "300px" }}
+        >
           {/* Projects table */}
           <table className="items-center w-full bg-transparent border-collapse">
             <thead>
@@ -106,20 +121,10 @@ export default function CardTableUser({ color, getUsers, users }) {
                     {head.header}
                   </th>
                 ))}
-                <th
-                  className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                    (color === "light"
-                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
-                  }
-                >
-                  Action
-                </th>
               </tr>
             </thead>
             <tbody>
-              {users.map((data, idx) => {
+              {txn.map((data, idx) => {
                 return (
                   <tr key={idx}>
                     <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
@@ -135,13 +140,16 @@ export default function CardTableUser({ color, getUsers, users }) {
                       </span>
                     </th>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {data.name}
-                    </td>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap p-4 ">
-                      <p className="line-clamp-1">{data.email}</p>
+                      {data.sid}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {data.role}
+                      {data.senderId?.name}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {data.receiverId?.name}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {data.amount}
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <i
@@ -151,12 +159,14 @@ export default function CardTableUser({ color, getUsers, users }) {
                       ></i>{" "}
                       {data.status}
                     </td>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {moment(data.createdAt).format("DD-MM-YYYY HH:mm")}
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap p-4 ">
+                      <p className="line-clamp-1">
+                        {moment(data.transDate).format("DD-MM-YYYY HH:mm")}
+                      </p>
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      <TableDropdown />
+                      {data.transType}
                     </td>
                   </tr>
                 );
@@ -190,10 +200,10 @@ export default function CardTableUser({ color, getUsers, users }) {
   );
 }
 
-CardTableUser.defaultProps = {
+CardTransaction.defaultProps = {
   color: "light",
 };
 
-CardTableUser.propTypes = {
+CardTransaction.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };

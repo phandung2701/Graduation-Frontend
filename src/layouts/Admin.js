@@ -14,6 +14,7 @@ import Dashboard from "views/admin/Dashboard.js";
 import UserManagement from "views/admin/UserManagement";
 import Settings from "views/admin/Settings.js";
 import Tables from "views/admin/Tables.js";
+import AllTransaction from "views/manageJob/Transaction";
 
 export default function Admin() {
   console.log("kìn chái na");
@@ -36,6 +37,11 @@ export default function Admin() {
               component={UserManagement}
             />
             <Route path="/admin/settings" exact component={Settings} />
+            <Route
+              path="/admin/transactions"
+              exact
+              component={AllTransaction}
+            />
             <Route path="/admin/tables" exact component={Tables} />
             <Redirect from="/admin" to="/admin/dashboard" />
           </Switch>
